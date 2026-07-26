@@ -1,5 +1,11 @@
 # 🛡️ Wazuh SIEM & Security Operations Course
 
+```text
+   Creator: Yahyaoui Med Aziz | 260726
+   Editor: Antigravity
+   Defintions: gemini  
+```
+
 [![Wazuh](https://img.shields.io/badge/Wazuh-v4.x-blue.svg?style=for-the-badge&logo=wazuh)](https://wazuh.com/)
 [![SIEM](https://img.shields.io/badge/SIEM-Security%20Operations-red.svg?style=for-the-badge&logo=shield)](https://wazuh.com/)
 [![EDR](https://img.shields.io/badge/EDR-Endpoint%20Detection-orange.svg?style=for-the-badge)](https://wazuh.com/)

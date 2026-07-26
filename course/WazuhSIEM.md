@@ -1,5 +1,11 @@
 # Comprehensive Introduction to SIEM & Wazuh
 
+```text
+   Creator: Yahyaoui Med Aziz | 260726
+   Editor: Antigravity
+   Defintions: gemini  
+```
+
 ---
 
 ## Part 1: Introduction to SIEM (Security Information and Event Management)
