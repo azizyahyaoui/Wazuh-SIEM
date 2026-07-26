@@ -18,23 +18,23 @@ Welcome to the **Wazuh SIEM & Security Operations Course** repository. This proj
 
 ## 📑 Table of Contents
 
-- [Overview](#-overview)
-- [Course Curriculum](#-course-curriculum)
-- [Key Features & Capabilities](#-key-features--capabilities)
-- [Wazuh Architecture](#-wazuh-architecture)
-- [Repository Structure](#-repository-structure)
-- [Quick Start](#-quick-start)
-- [Contributing & License](#-contributing--license)
+- [Overview](#overview)
+- [Course Curriculum](#course-curriculum)
+- [Key Features & Capabilities](#key-features--capabilities)
+- [Wazuh Architecture](#wazuh-architecture)
+- [Repository Structure](#repository-structure)
+- [Quick Start](#quick-start)
+- [License](#license)
 
 ---
 
-## 🧐 Overview
+## Overview
 
 Modern Security Operations Centers (SOC) require full visibility across endpoints, cloud workloads, network traffic, and containerized environments. This course bridges the gap between theoretical SIEM concepts and hands-on detection engineering using **Wazuh**.
 
 ---
 
-## 📚 Course Curriculum
+## Course Curriculum
 
 The main course material is available in [`course/WazuhSIEM.md`](./course/WazuhSIEM.md) and covers:
 
@@ -50,7 +50,7 @@ The main course material is available in [`course/WazuhSIEM.md`](./course/WazuhS
 
 ---
 
-## ⚡ Key Features & Capabilities
+## Key Features & Capabilities
 
 | Feature Category | Capabilities |
 | :--- | :--- |
@@ -63,7 +63,7 @@ The main course material is available in [`course/WazuhSIEM.md`](./course/WazuhS
 
 ---
 
-## 🏗️ Wazuh Architecture
+## Wazuh Architecture
 
 ```mermaid
 graph LR
@@ -93,7 +93,7 @@ graph LR
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 Wazuh SIEM/
@@ -108,7 +108,7 @@ Wazuh SIEM/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 1. **Read the Course Material**:
    Open [`course/WazuhSIEM.md`](./course/WazuhSIEM.md) to explore the SIEM fundamentals and Wazuh architecture breakdown.
@@ -118,6 +118,6 @@ Wazuh SIEM/
 
 ---
 
-## 📄 License
+## License
 
 This repository is maintained for educational purposes. Feel free to use and adapt the material.
