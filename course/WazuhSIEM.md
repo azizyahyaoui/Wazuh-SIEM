@@ -5,10 +5,15 @@
 ## Part 1: Introduction to SIEM (Security Information and Event Management)
 
 ### 1. What is SIEM?
+
 **SIEM** (pronounced *sim*) stands for **Security Information and Event Management**. It is a security solution that helps organizations detect, analyze, and respond to security threats before they harm business operations.
 
 SIEM combines two original concepts:
-* **SIM (Security Information Management):** Automates the collection, long-term storage, analysis, and reporting of log data for compliance and historical audit purposes.
+
+* **SIM (Security Information Management):**
+
+ Automates the collection, long-term storage, analysis, and reporting of log data for compliance and historical audit purposes.
+
 * **SEM (Security Event Management):** Monitors systems in real-time, correlates event data, sends alerts, and provides console views for security analysts.
 
 ```mermaid
@@ -49,6 +54,7 @@ graph TD
 ---
 
 ### 2. Core Functions of a SIEM
+
 1. **Log Aggregation & Centralization:** Collects logs from diverse sources across the infrastructure into a single pane of glass.
 2. **Data Normalization:** Converts unstructured logs from different vendors and OS formats into a standardized, searchable format (e.g., JSON).
 3. **Real-Time Event Correlation:** Evaluates log events against rules and algorithms to identify suspicious patterns (e.g., 5 failed SSH logins followed by a successful login within 30 seconds).
@@ -61,6 +67,7 @@ graph TD
 ## Part 2: Introduction to Wazuh
 
 ### 1. What is Wazuh?
+
 **Wazuh** is a free, open-source enterprise-grade **Unified XDR (Extended Detection and Response)** and **SIEM platform**. Originally created as a fork of OSSEC, Wazuh has evolved into a comprehensive security monitoring ecosystem used by organizations worldwide.
 
 Wazuh provides multi-platform agent-based and agentless monitoring across endpoint devices, cloud environments, containerized environments, and network equipment.
