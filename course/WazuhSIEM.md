@@ -3,8 +3,9 @@
 ```text
    Creator: Yahyaoui Med Aziz | 260726
    Editor: Antigravity
-   Defintions: gemini  
 ```
+
+- **[Official Documentation](https://documentation.wazuh.com/current/index.html)**
 
 ---
 
@@ -16,11 +17,11 @@
 
 SIEM combines two original concepts:
 
-* **SIM (Security Information Management):**
+- **SIM (Security Information Management):**
 
  Automates the collection, long-term storage, analysis, and reporting of log data for compliance and historical audit purposes.
 
-* **SEM (Security Event Management):** Monitors systems in real-time, correlates event data, sends alerts, and provides console views for security analysts.
+- **SEM (Security Event Management):** Monitors systems in real-time, correlates event data, sends alerts, and provides console views for security analysts.
 
 ```mermaid
 
@@ -76,7 +77,10 @@ graph TD
 
 **Wazuh** is a free, open-source enterprise-grade **Unified XDR (Extended Detection and Response)** and **SIEM platform**. Originally created as a fork of OSSEC, Wazuh has evolved into a comprehensive security monitoring ecosystem used by organizations worldwide.
 
-Wazuh provides multi-platform agent-based and agentless monitoring across endpoint devices, cloud environments, containerized environments, and network equipment.
+Wazuh provides multi-platform agent-based and agentless monitoring across endpoint devices, cloud environments as a SaaS platform, containerized environments, and network equipment.
+
+- def:
+        - XDR : **Extended Detection and Response**: it is a cybersecurity technology that automatically collects and correlates data from endpoints, networks, cloud services, and email to detect, investigate, and respond to threats in real-time.
 
 ```mermaid
 graph LR
@@ -123,23 +127,60 @@ graph LR
 ### 4. Core Components of Wazuh Architecture
 
 1. **Wazuh Agent:**
-   * A lightweight service installed on endpoints (Windows, Linux, macOS, Solaris, AIX).
-   * Runs local checks (FIM, rootkit detection, process monitoring) and securely forwards event logs to the manager.
+   - A lightweight service installed on endpoints (Windows, Linux, macOS, Solaris, AIX).
+   - Runs local checks (FIM, rootkit detection, process monitoring) and securely forwards event logs to the manager.
 
 2. **Wazuh Server (Manager):**
-   * The processing center. Receives data from agents or agentless syslog sources.
-   * Decodes incoming logs, compares them against security rule sets, enriches events with threat intel, and generates alerts.
+   - The processing center. Receives data from agents or agentless syslog sources.
+   - Decodes incoming logs, compares them against security rule sets, enriches events with threat intel, and generates alerts.
 
 3. **Wazuh Indexer:**
-   * A highly scalable, full-text search engine based on OpenSearch.
-   * Stores indexed alerts, historical data, and security events for fast query performance.
+   - A highly scalable, full-text search engine based on OpenSearch.
+   - Stores indexed alerts, historical data, and security events for fast query performance.
 
 4. **Wazuh Dashboard:**
-   * A web-based UI for data visualization, security analytics, alert management, compliance reporting, and system administration.
+   - A web-based UI for data visualization, security analytics, alert management, compliance reporting, and system administration.
 
 ---
 
 ## Summary Comparison: Traditional SIEM vs. Wazuh
 
-* **Traditional SIEM:** Focuses primarily on centralized log storage and rule-based correlation across network devices and servers. Often expensive and complex.
-* **Wazuh:** Combines **SIEM** (log analysis, correlation, compliance) with **EDR** (endpoint detection, file integrity monitoring, active response, vulnerability management) into an open-source, cost-effective platform.
+- **Traditional SIEM:** Focuses primarily on centralized log storage and rule-based correlation across network devices and servers. Often expensive and complex.
+- **Wazuh:** Combines **SIEM** (log analysis, correlation, compliance) with **EDR** (endpoint detection, file integrity monitoring, active response, vulnerability management) into an open-source, cost-effective platform.
+
+## Wazuh vs splunk vs snort
+
+
+Wazuh, Splunk, and Snort are often discussed together in cybersecurity, but they operate at entirely different layers of defense. Understanding their distinct roles—host, network, and enterprise log analytics—is essential for building a complete Security Operations Center (SOC) stack.
+
+---
+
+####  Core Focus and Architecture
+
+* **Snort (Network Layer):** An open-source Network Intrusion Detection System (NIDS). It analyzes network traffic and packet streams in real-time using a rule-based engine to catch malicious activity on the wire before it reaches the endpoint. It requires strategic placement in the network architecture to intercept traffic effectively.
+* **Wazuh (Host Layer & Open-Source SIEM):** An open-source host-based intrusion detection system (HIDS) and security platform. It uses lightweight agents deployed on individual endpoints to monitor system logs, file integrity, and system configurations. Its backend indexes these logs for centralized threat hunting and compliance monitoring.
+* **Splunk (Enterprise SIEM & Analytics):** A heavyweight, commercial data analytics and SIEM platform. It ingests massive volumes of machine data from virtually any source. Its real power lies in the Search Processing Language (SPL), which enables security teams to filter events and build complex threat correlations across an entire enterprise.
+
+---
+
+#### Key Differences at a Glance
+
+| Feature | Snort | Wazuh | Splunk |
+| --- | --- | --- | --- |
+| **Primary Role** | NIDS / Network Monitoring | HIDS / Open-Source SIEM | Enterprise SIEM / Data Platform |
+| **Data Source** | Network packets (live wire) | Endpoint logs, sys calls, file changes | Any log source (Network, Host, Cloud) |
+| **Pricing Model** | Open-source (free) | Open-source (free, infrastructure costs) | Commercial (ingest-volume based) |
+| **Threat Detection** | Real-time packet inspection | Agent-based rules & log correlation | Advanced SPL queries & ML correlation |
+
+---
+
+#### How They Work Together
+
+Instead of treating these tools as mutually exclusive competitors, modern security architectures often combine them to ensure complete coverage.
+
+When designing virtualized lab environments containing Linux servers, Docker containers, and security testing machines like Kali, Wazuh is ideal for providing deep endpoint visibility without the steep data-ingestion costs of a commercial SIEM. By deploying the Wazuh manager, indexer, and dashboard components via Docker Compose—and securing their web interfaces with custom-generated SSL certificates—you can simulate a full SOC threat monitoring stack. Snort can be deployed alongside it on the network perimeter to analyze the raw inbound traffic.
+
+In corporate environments, the alerts from both Wazuh and Snort are frequently forwarded into a central Splunk cluster, where analysts use SPL to track an attack from the initial network perimeter breach down to the specific compromised process on a host machine.
+
+##  Wazuh Server Integration with ELK Stack
+        TODO
