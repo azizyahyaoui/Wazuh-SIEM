@@ -184,3 +184,6 @@ In corporate environments, the alerts from both Wazuh and Snort are frequently f
 
 ##  Wazuh Server Integration with ELK Stack
         TODO
+
+## Adding sysmon
+        TODO
