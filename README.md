@@ -3,7 +3,6 @@
 ```text
    Creator: Yahyaoui Med Aziz | 260726
    Editor: Antigravity
-   Defintions: gemini  
 ```
 
 [![Wazuh](https://img.shields.io/badge/Wazuh-v4.x-blue.svg?style=for-the-badge&logo=wazuh)](https://wazuh.com/)
