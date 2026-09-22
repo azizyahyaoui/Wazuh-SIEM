@@ -182,8 +182,5 @@ When designing virtualized lab environments containing Linux servers, Docker con
 
 In corporate environments, the alerts from both Wazuh and Snort are frequently forwarded into a central Splunk cluster, where analysts use SPL to track an attack from the initial network perimeter breach down to the specific compromised process on a host machine.
 
-##  Wazuh Server Integration with ELK Stack
-        TODO
-
 ## Adding sysmon
         TODO
