@@ -101,7 +101,9 @@ Wazuh SIEM/
 │   ├── Images/               # Course diagrams and graphics
 │   ├── pdf/                  # Exported PDF documentation
 │   └── screenshots/          # Hands-on lab screenshots
-├── docker/                   # Docker Compose environment (coming soon)
+├── docker/                   # Docker environment guides and cheat sheets
+│   ├── DeploymentGuide.md    # Guide for deploying Wazuh via Docker
+│   └── ChangeAdminPassword.md # Cheat sheet for resetting the admin password
 └── README.md                 # Project Overview & Guide
 ```
 
@@ -113,7 +115,7 @@ Wazuh SIEM/
    Open [`course/WazuhSIEM.md`](./course/WazuhSIEM.md) to explore the SIEM fundamentals and Wazuh architecture breakdown.
 
 2. **Deploying Wazuh (Docker)** *(Optional)*:
-   Check the `docker/` folder for upcoming Docker Compose deployment scripts to launch a single-node or multi-node Wazuh stack locally.
+   Check the `docker/` folder for guides on deploying Wazuh via Docker and managing the environment, such as [`DeploymentGuide.md`](./docker/DeploymentGuide.md) and [`ChangeAdminPassword.md`](./docker/ChangeAdminPassword.md).
 
 ---
 
