@@ -150,20 +150,19 @@ graph LR
 
 ## Wazuh vs splunk vs snort
 
-
 Wazuh, Splunk, and Snort are often discussed together in cybersecurity, but they operate at entirely different layers of defense. Understanding their distinct roles—host, network, and enterprise log analytics—is essential for building a complete Security Operations Center (SOC) stack.
 
 ---
 
-####  Core Focus and Architecture
+### Core Focus and Architecture
 
-* **Snort (Network Layer):** An open-source Network Intrusion Detection System (NIDS). It analyzes network traffic and packet streams in real-time using a rule-based engine to catch malicious activity on the wire before it reaches the endpoint. It requires strategic placement in the network architecture to intercept traffic effectively.
-* **Wazuh (Host Layer & Open-Source SIEM):** An open-source host-based intrusion detection system (HIDS) and security platform. It uses lightweight agents deployed on individual endpoints to monitor system logs, file integrity, and system configurations. Its backend indexes these logs for centralized threat hunting and compliance monitoring.
-* **Splunk (Enterprise SIEM & Analytics):** A heavyweight, commercial data analytics and SIEM platform. It ingests massive volumes of machine data from virtually any source. Its real power lies in the Search Processing Language (SPL), which enables security teams to filter events and build complex threat correlations across an entire enterprise.
+- **Snort (Network Layer):** An open-source Network Intrusion Detection System (NIDS). It analyzes network traffic and packet streams in real-time using a rule-based engine to catch malicious activity on the wire before it reaches the endpoint. It requires strategic placement in the network architecture to intercept traffic effectively.
+- **Wazuh (Host Layer & Open-Source SIEM):** An open-source host-based intrusion detection system (HIDS) and security platform. It uses lightweight agents deployed on individual endpoints to monitor system logs, file integrity, and system configurations. Its backend indexes these logs for centralized threat hunting and compliance monitoring.
+- **Splunk (Enterprise SIEM & Analytics):** A heavyweight, commercial data analytics and SIEM platform. It ingests massive volumes of machine data from virtually any source. Its real power lies in the Search Processing Language (SPL), which enables security teams to filter events and build complex threat correlations across an entire enterprise.
 
 ---
 
-#### Key Differences at a Glance
+### Key Differences at a Glance
 
 | Feature | Snort | Wazuh | Splunk |
 | --- | --- | --- | --- |
@@ -183,4 +182,5 @@ When designing virtualized lab environments containing Linux servers, Docker con
 In corporate environments, the alerts from both Wazuh and Snort are frequently forwarded into a central Splunk cluster, where analysts use SPL to track an attack from the initial network perimeter breach down to the specific compromised process on a host machine.
 
 ## Adding sysmon
-        TODO
+
+TODO

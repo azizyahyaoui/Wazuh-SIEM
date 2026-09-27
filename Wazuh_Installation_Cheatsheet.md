@@ -1,10 +1,11 @@
 # Wazuh Installation Cheat Sheet
-## Ubuntu Server
----
 
-## Part 1: Direct Installation on Ubuntu Server
+## Ubuntu Server
+
+> Part 1: Direct Installation on Ubuntu Server
 
 ### System Requirements
+
 - **OS**: Ubuntu 18.04, 20.04, or 22.04 LTS (64-bit)
 - **RAM**: Minimum 2GB (4GB+ recommended)
 - **Storage**: Minimum 10GB free space
@@ -12,6 +13,7 @@
 - **Internet**: Required for package downloads
 
 ### Prerequisites
+
 ```bash
 # Update system packages
 sudo apt update && sudo apt upgrade -y
@@ -30,6 +32,7 @@ sudo apt update
 ```
 
 ### Install Wazuh Manager
+
 ```bash
 # Install Wazuh manager package
 sudo apt install -y wazuh-manager
@@ -44,6 +47,7 @@ sudo systemctl status wazuh-manager
 ```
 
 ### Install Elasticsearch
+
 ```bash
 # Import Elasticsearch GPG key
 curl -s https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
@@ -69,6 +73,7 @@ sudo systemctl start elasticsearch
 ```
 
 ### Install Kibana
+
 ```bash
 # Install Kibana
 sudo apt install -y kibana=7.10.2
@@ -87,6 +92,7 @@ sudo systemctl start kibana
 ```
 
 ### Install Filebeat (for Wazuh logs)
+
 ```bash
 # Install Filebeat
 sudo apt install -y filebeat=7.10.2
@@ -105,6 +111,7 @@ sudo systemctl start filebeat
 ```
 
 ### Useful Commands
+
 ```bash
 # Check Wazuh Manager status
 sudo systemctl status wazuh-manager

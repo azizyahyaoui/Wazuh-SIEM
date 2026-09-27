@@ -3,6 +3,7 @@
 Deploying Wazuh via Docker offers a clean, isolated, and replicable way to get the stack running.
 
 ## System Requirements
+
 - **Docker**: 20.10+
 - **Docker Compose**: 1.29+
 - **RAM**: Minimum 4GB
@@ -134,7 +135,7 @@ docker exec -it wazuh-manager /var/ossec/bin/wazuh-control status
 ## 5. Ports Reference
 
 | Service | Port | Protocol | Purpose |
-|---------|------|----------|---------|
+| --------- | ------ | ---------- | --------- |
 | Wazuh Manager | 1514 | TCP | Agent communication |
 | Wazuh Manager | 1515 | TCP | Agent enrollment |
 | Wazuh Manager | 514 | UDP | Syslog input |
@@ -181,6 +182,7 @@ docker stats
 - **Use SSL/TLS certificates** for all communications
 - **Restrict network access** to Wazuh ports
 - **Configure Firewall (UFW)**:
+
   ```bash
   sudo ufw allow 443/tcp   # Dashboard
   sudo ufw allow 55000/tcp # Wazuh API
@@ -191,10 +193,9 @@ docker stats
 
 ## Change config inside docker
 
-
 To modify your Wazuh manager configuration in a single container, you'll want to update `/var/ossec/etc/ossec.conf`. Depending on your workflow, you can do this through the Wazuh Dashboard UI, directly in the container, or by mounting a local config file.
 
-**Method 1: Through the Wazuh Dashboard (Easiest)**
+-**Method 1: Through the Wazuh Dashboard (Easiest)**
 
 1. Open the Wazuh Web UI.
 2. Navigate to **Wazuh** > **Server Management** > **Settings** > **Edit configuration**.
@@ -274,9 +275,9 @@ Locate the `<syscheck>` XML block in `ossec.conf`, make sure it is enabled (`<di
 
 **Key Attribute Breakdown:**
 
-* `check_all="yes"`: Validates file hashes (MD5, SHA1, SHA256), permissions, ownership, and file size.
-* `realtime="yes"`: Uses `inotify` (Linux) or Directory Change Notifications (Windows) for instant alerts rather than waiting for the periodic scan.
-* `report_changes="yes"`: Sends a diff of the text file modifications inside the Wazuh alert payload so you can see exactly what line was modified.
+- `check_all="yes"`: Validates file hashes (MD5, SHA1, SHA256), permissions, ownership, and file size.
+- `realtime="yes"`: Uses `inotify` (Linux) or Directory Change Notifications (Windows) for instant alerts rather than waiting for the periodic scan.
+- `report_changes="yes"`: Sends a diff of the text file modifications inside the Wazuh alert payload so you can see exactly what line was modified.
 
 **2. Apply and Test the Changes**
 Restart the Wazuh manager to load the updated configuration:

@@ -2,7 +2,7 @@
 
 > Default password is bad habit
 
-### 📌 Summary of Correct Docker Paths
+## 📌 Summary of Correct Docker Paths
 
 | Target | Bare-Metal Path (Do NOT use) | Docker Container Path (USE THIS) |
 | --- | --- | --- |
@@ -11,7 +11,7 @@
 
 ---
 
-### Step 1: Generate a New Bcrypt Hash
+## Step 1: Generate a New Bcrypt Hash
 
 Run a temporary container to hash your new password:
 
@@ -24,7 +24,7 @@ docker run --rm -ti wazuh/wazuh-indexer:latest bash /usr/share/wazuh-indexer/plu
 
 ---
 
-### Step 2: Edit Host Files
+## Step 2: Edit Host Files
 
 1. **Update `config/wazuh_indexer/internal_users.yml**`:
 Replace the `hash` under the `admin:` block:
@@ -41,8 +41,7 @@ admin:
   description: "Demo admin user"
 ```
 
-
-2. **Update `docker-compose.yml**`:
+1. **Update `docker-compose.yml**`:
 
 ```yaml
 services:
@@ -70,7 +69,7 @@ services:
 
 ---
 
-### Step 3: Restart Stack & Wait for Health check
+## Step 3: Restart Stack & Wait for Health check
 
 ```bash
 docker compose down && docker compose up -d
@@ -81,9 +80,9 @@ docker compose down && docker compose up -d
 
 ---
 
-### Step 4: Apply Changes inside the Container (One-Liner Execution)
+## Step 4: Apply Changes inside the Container (One-Liner Execution)
 
-#### Method A: Interactive Shell
+### Method A: Interactive Shell
 
 ```bash
 docker exec -it single-node-wazuh.indexer-1 bash
@@ -134,7 +133,7 @@ bash /usr/share/wazuh-indexer/plugins/opensearch-security/tools/securityadmin.sh
 
 ---
 
-### 💡 Troubleshooting Pro-Tips
+## 💡 Troubleshooting Pro-Tips
 
 * **`ERR: Seems there is no OpenSearch running on localhost:9200`**
 Always append `-h 127.0.0.1` to force loopback IP resolution inside the container.
