@@ -181,6 +181,53 @@ When designing virtualized lab environments containing Linux servers, Docker con
 
 In corporate environments, the alerts from both Wazuh and Snort are frequently forwarded into a central Splunk cluster, where analysts use SPL to track an attack from the initial network perimeter breach down to the specific compromised process on a host machine.
 
-## Adding sysmon
+---
 
-TODO
+## **Install Wazuh**
+
+Wazuh can be install in severl ways:
+1- direct installation on linux or windows
+2- using docker
+3- using cloud platforms like AWS, Azure, GCP
+4- Integrate with ELK Stack
+and so on...
+
+Since we are working in a **virtualized lab environment**, we will use a **single-node Wazuh deployment** — this bundles the Wazuh Server, Indexer, and Dashboard into one stack, making it perfect for learning and testing without the overhead of a multi-node cluster.
+
+> [!NOTE]
+> I've written a dedicated step-by-step guide covering the full Docker-based deployment, including SSL certificate generation and service configuration. Refer to it below before proceeding.
+
+📖 **Guide:** [Deploy Wazuh (Docker)](docker/deployment-Wazuh.md)
+
+---
+
+### Add Agents to Wazuh
+
+Once the Wazuh server is up and running, you need to deploy agents to the endpoints you want to monitor.
+
+**Steps:**
+
+1. Navigate to the **Wazuh Dashboard**.
+2. Todeploy a new agent following the instructions in the Wazuh dashboard. Go to Agents management > Summary, and click on Deploy new agent.
+3. Select the **Operating System** of the target machine (Windows, Linux, macOS, etc.).
+4. Copy the provided installation command.
+5. Run the command on the target machine's terminal.
+
+**Example (Linux Agent Installation):**
+
+```bash
+curl -o wazuh-agent-4.12.0-1.x86_64.rpm https://packages.wazuh.com/4.x/yum/wazuh-agent-4.12.0-1.x86_64.rpm && sudo WAZUH_MANAGER='WAZUH_SERVER_IP' rpm -ihv wazuh-agent-4.12.0-1.x86_64.rpm
+```
+
+> [!NOTE]
+> Replace `WAZUH_SERVER_IP` with the IP address of your Wazuh server.
+
+- And followed by:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable wazuh-agent
+sudo systemctl start wazuh-agent
+```
+
+---
