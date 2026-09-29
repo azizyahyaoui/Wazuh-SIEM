@@ -213,7 +213,7 @@ Once the Wazuh server is up and running, you need to deploy agents to the endpoi
 4. Copy the provided installation command.
 5. Run the command on the target machine's terminal.
 
-**Example (Linux Agent Installation):**
+**Example 1 (Linux Agent Installation):**
 
 ```bash
 curl -o wazuh-agent-4.12.0-1.x86_64.rpm https://packages.wazuh.com/4.x/yum/wazuh-agent-4.12.0-1.x86_64.rpm && sudo WAZUH_MANAGER='WAZUH_SERVER_IP' rpm -ihv wazuh-agent-4.12.0-1.x86_64.rpm
@@ -230,4 +230,56 @@ sudo systemctl enable wazuh-agent
 sudo systemctl start wazuh-agent
 ```
 
+- Configs files on linux:
+
+  ```bash
+  # View agent configuration
+  sudo tail /var/ossec/etc/ossec.conf
+  
+  # Edit the agent configuration
+  sudo nano /var/ossec/etc/ossec.conf
+  
+  # Restart the Wazuh agent
+  sudo systemctl restart wazuh-agent
+  
+  # Check agent status
+  sudo systemctl status wazuh-agent
+  ```
+
 ---
+
+**Example 2 (Windows Agent Installation):**
+
+```powershell
+Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.12.0-1.msi -OutFile $env:tmp\wazuh-agent; msiexec.exe /i $env:tmp\wazuh-agent /q WAZUH_MANAGER="WAZUH_SERVER_IP"
+```
+
+- And followed by:
+
+```powershell
+NET START WazuhSvc
+```
+
+- Configs files on windows:
+
+  ```powershell
+  # View agent configuration
+  Get-Content "$env:ProgramFiles\Wazuh\ossec.conf"
+  
+  # Edit the agent configuration
+  notepad "$env:ProgramFiles\Wazuh\ossec.conf"
+  
+  # Restart the Wazuh agent
+  Restart-Service WazuhSvc
+  
+  # Check agent status
+  Get-Service WazuhSvc | Select Name, Status
+  ```
+
+---
+
+## Use Sysmon for Advanced Windows Monitoring
+
+---
+
+## Docker Cts Monitoring
