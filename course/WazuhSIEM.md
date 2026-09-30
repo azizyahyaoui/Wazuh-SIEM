@@ -331,10 +331,6 @@ TimeCreated                      Id LevelDisplayName Message
     <location>Microsoft-Windows-Sysmon/Operational</location>
     <log_format>eventchannel</log_format>
   </localfile>
-  <localfile>
-    <location>Microsoft-Windows-Sysmon/Operational</location>
-    <log_format>sysmon</log_format>
-  </localfile>
 <!-- End Sysmon Event Collection Configuration -->
 </ossec_config>
 
