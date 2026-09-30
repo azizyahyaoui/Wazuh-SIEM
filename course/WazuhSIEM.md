@@ -296,7 +296,7 @@ wget https://wazuh.com/resources/blog/emulation-of-attack-techniques-and-detecti
 
 ---
 
-- 1. Install and Configure Sysmon on Windows Agent
+- 2. Install and Configure Sysmon on Windows Agent
 
 ```powershell
 
@@ -320,7 +320,7 @@ Starting Sysmon64..
 Sysmon64 started.
 ```
 
-- 2. Check if it's working
+- 3. Check if it's working
 
 ```powershell
 Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational'; Id=1} | Select-Object -First 5
@@ -335,9 +335,9 @@ TimeCreated                      Id LevelDisplayName Message
 
 ```
 
-- 3. Configure Sysmon to forward logs to Wazuh manager
+- 4. Configure Sysmon to forward logs to Wazuh manager
 
-```conf
+```xml
 # Add Sysmon event collection to ossec.conf on the agent
 # Edit C:\Program Files (x86)\ossec-agent\ossec.conf
 
@@ -354,7 +354,7 @@ TimeCreated                      Id LevelDisplayName Message
 ```
 > [!NOTE] : in "C:\Program Files (x86)\ossec-agent\ossec.conf" the main configuration file for the Wazuh agent, you should be editing inside `<ossec_config>` ... `</ossec_config>` tags.
 
-- 4. Restart the Wazuh agent
+- 5. Restart the Wazuh agent
 
 ```powershell
 Restart-Service WazuhSvc
@@ -362,3 +362,5 @@ Restart-Service WazuhSvc
 
 ---
 
+
+## Docker Cts Monitoring
