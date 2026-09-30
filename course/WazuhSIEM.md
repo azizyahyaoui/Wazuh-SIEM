@@ -341,7 +341,9 @@ TimeCreated                      Id LevelDisplayName Message
 # Add Sysmon event collection to ossec.conf on the agent
 # Edit C:\Program Files (x86)\ossec-agent\ossec.conf
 
+
 <ossec_config>
+<!-- Sysmon Event Collection Configuration -->
   <localfile>
     <location>Microsoft-Windows-Sysmon/Operational</location>
     <log_format>eventchannel</log_format>
@@ -350,7 +352,9 @@ TimeCreated                      Id LevelDisplayName Message
     <location>Microsoft-Windows-Sysmon/Operational</location>
     <log_format>sysmon</log_format>
   </localfile>
+<!-- End Sysmon Event Collection Configuration -->
 </ossec_config>
+
 ```
 > [!NOTE] : in "C:\Program Files (x86)\ossec-agent\ossec.conf" the main configuration file for the Wazuh agent, you should be editing inside `<ossec_config>` ... `</ossec_config>` tags.
 
@@ -363,4 +367,5 @@ Restart-Service WazuhSvc
 ---
 
 
-## Docker Cts Monitoring
+### DeerStealer malware Detection
+
