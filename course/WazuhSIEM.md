@@ -280,6 +280,85 @@ NET START WazuhSvc
 
 ## Use Sysmon for Advanced Windows Monitoring
 
+- So by default Wazuh agent collect logs from windows, but it's not enough for SOC analysis, that's why we use Sysmon for advanced monitoring, Which I already have explain it in the telemetry part in my github repo, so if you want to know more about it go to the [Sysmon Configuration and deployment guide](https://github.com/azizyahyaoui/HomeLab-stacks/tree/master/security/telemetry).
+
+- 1. Wazuh agent will forward all the events collected from Sysmon to Wazuh manager.
+
+> You can create custom rules to detect specific threats in Wazuh manager or download the Wazuh custom rules for Sysmon from the internet.
+
+```powershell
+wget https://wazuh.com/resources/blog/emulation-of-attack-techniques-and-detection-with-wazuh/sysmonconfig.xml -Outfile sysmonconfig.xml
+```
+
+- It's on my GitHub in the security telemetry folder also.
+
+- [wazuh_sysmonconf.xml](https://github.com/azizyahyaoui/HomeLab-stacks/blob/master/security/telemetry/sysmon/Wazuh/wazuh_sysmonconf.xml)
+
 ---
 
-## Docker Cts Monitoring
+- 1. Install and Configure Sysmon on Windows Agent
+
+```powershell
+
+PS C:\Users\User\workspace\Sysmon> .\Sysmon64.exe -accepteula -i .\config\sysmonconfig.xml
+
+
+System Monitor v15.22 - System activity monitor
+By Mark Russinovich and Thomas Garnier
+Copyright (C) 2014-2026 Microsoft Corporation
+Using libxml2. libxml2 is Copyright (C) 1998-2012 Daniel Veillard. All Rights Reserved.
+Sysinternals - www.sysinternals.com
+
+Loading configuration file with schema version 4.90
+Sysmon schema version: 4.91
+Configuration file validated.
+Sysmon64 installed.
+SysmonDrv installed.
+Starting SysmonDrv.   # Here sysmon startmon install driver for monitoring windows logs cause is talk direct to the windows kernel.
+SysmonDrv started.
+Starting Sysmon64..
+Sysmon64 started.
+```
+
+- 2. Check if it's working
+
+```powershell
+Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational'; Id=1} | Select-Object -First 5
+
+   ProviderName : Microsoft-Windows-Sysmon
+
+TimeCreated                      Id LevelDisplayName Message
+-----------                      -- ---------------- -------
+29/09/2026 23:45:06               1 Information      Process Create:...
+29/09/2026 23:45:02               1 Information      Process Create:...
+29/09/2026 23:44:59               1 Information      Process Create:...
+
+```
+
+- 3. Configure Sysmon to forward logs to Wazuh manager
+
+```conf
+# Add Sysmon event collection to ossec.conf on the agent
+# Edit C:\Program Files (x86)\ossec-agent\ossec.conf
+
+<ossec_config>
+  <localfile>
+    <location>Microsoft-Windows-Sysmon/Operational</location>
+    <log_format>eventchannel</log_format>
+  </localfile>
+  <localfile>
+    <location>Microsoft-Windows-Sysmon/Operational</location>
+    <log_format>sysmon</log_format>
+  </localfile>
+</ossec_config>
+```
+> [!NOTE] : in "C:\Program Files (x86)\ossec-agent\ossec.conf" the main configuration file for the Wazuh agent, you should be editing inside `<ossec_config>` ... `</ossec_config>` tags.
+
+- 4. Restart the Wazuh agent
+
+```powershell
+Restart-Service WazuhSvc
+```
+
+---
+
