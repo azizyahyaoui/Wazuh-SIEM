@@ -356,7 +356,8 @@ TimeCreated                      Id LevelDisplayName Message
 </ossec_config>
 
 ```
-> [!NOTE] : in "C:\Program Files (x86)\ossec-agent\ossec.conf" the main configuration file for the Wazuh agent, you should be editing inside `<ossec_config>` ... `</ossec_config>` tags.
+> [!NOTE]
+> In "C:\Program Files (x86)\ossec-agent\ossec.conf" the main configuration file for the Wazuh agent, you should be editing inside `<ossec_config>` ... `</ossec_config>` tags.
 
 - 5. Restart the Wazuh agent
 
