@@ -301,23 +301,6 @@ wget https://wazuh.com/resources/blog/emulation-of-attack-techniques-and-detecti
 ```powershell
 
 PS C:\Users\User\workspace\Sysmon> .\Sysmon64.exe -accepteula -i .\config\sysmonconfig.xml
-
-
-System Monitor v15.22 - System activity monitor
-By Mark Russinovich and Thomas Garnier
-Copyright (C) 2014-2026 Microsoft Corporation
-Using libxml2. libxml2 is Copyright (C) 1998-2012 Daniel Veillard. All Rights Reserved.
-Sysinternals - www.sysinternals.com
-
-Loading configuration file with schema version 4.90
-Sysmon schema version: 4.91
-Configuration file validated.
-Sysmon64 installed.
-SysmonDrv installed.
-Starting SysmonDrv.   # Here sysmon startmon install driver for monitoring windows logs cause is talk direct to the windows kernel.
-SysmonDrv started.
-Starting Sysmon64..
-Sysmon64 started.
 ```
 
 - 3. Check if it's working
