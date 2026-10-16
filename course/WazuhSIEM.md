@@ -354,9 +354,9 @@ Unlike Windows Sysmon, which Wazuh supports through its built-in rules and decod
 
 #### 1. Wazuh Sysmon Decoders
 
-Decoders tell Wazuh **how to parse** raw log lines into structured fields. Without them, Wazuh cannot extract event data from Sysmon for Linux XML logs, and no rules will fire correctly.
+Decoders tell Wazuh **how to parse** log messages into structured fields. The custom rules below rely on fields extracted by the corresponding decoder, so successful log collection alone does not guarantee that these rules will match. Some rules may still match raw messages if they are explicitly written to do so.
 
-> **Source:** Production-grade decoders by [SOCFortress](https://github.com/socfortress/Wazuh-Rules/blob/main/Sysmon%20Linux/decoder-linux-sysmon.xml), fully mapped to MITRE ATT&CK.
+> **Source:** Linux Sysmon decoder by [SOCFortress](https://github.com/socfortress/Wazuh-Rules/blob/main/Sysmon%20Linux/decoder-linux-sysmon.xml). The decoder extracts fields for rule evaluation; MITRE ATT&CK mappings belong in detection rules where applicable.
 
 **How to add the decoder file:**
 
@@ -381,7 +381,7 @@ The decoder uses a two-level, parent–child architecture:
 | `sysmon-linux` | **Parent** — matches any log line from the `sysmon` program name |
 | `sysmon-linux-child` | **Children** — each extracts a specific XML field via regex |
 
-The child decoders use `offset="after_parent"` regex patterns to extract structured fields from the raw Sysmon XML. Fields decoded include:
+The child decoders use `offset="after_parent"` regex patterns to extract structured fields from the Sysmon log message. The exact fields available depend on the decoder XML version you deploy. The source file is the authority for the fields actually extracted; verify these names against your copy before relying on them in rules. The documented field groups include:
 
 | Category | Fields Extracted |
 |---|---|
@@ -398,9 +398,9 @@ The child decoders use `offset="after_parent"` regex patterns to extract structu
 
 #### 2. Linux Sysmon Detection Rules
 
-Rules tell Wazuh **what to alert on** after decoding. The ruleset is organized into base rules (one per event type), override/suppression rules, and a frequency-based correlation rule.
+Rules tell Wazuh **when to generate an alert** from a decoded event. The ruleset described here contains base rules, lower-level rules intended to reduce noise, and a frequency-based correlation rule. Confirm each rule's conditions against the exact XML file you deploy.
 
-> **Source:** Production-grade rules by [SOCFortress](https://github.com/socfortress/Wazuh-Rules/blob/main/Sysmon%20Linux/200150-sysmon_for_linux_rules.xml).  
+> **Source:** Linux Sysmon rules by [SOCFortress](https://github.com/socfortress/Wazuh-Rules/blob/main/Sysmon%20Linux/200150-sysmon_for_linux_rules.xml). Treat the table below as a summary of the ruleset version you have reviewed, not a guarantee that every event type is generated or matched by every Sysmon for Linux build.  
 > Deploy to: `/var/ossec/etc/rules/sysmonforlinux_rules.xml`
 
 **Rule coverage summary:**
@@ -418,7 +418,7 @@ Rules tell Wazuh **what to alert on** after decoding. The ruleset is organized i
 
 **Noise suppression (override rules, level 1):**
 
-These rules drop known-benign, high-volume events to reduce alert fatigue:
+These rules are intended to lower the severity of selected events to reduce alert noise. A level-1 rule is not automatically a drop or suppression rule; verify the XML's parent/child relationships and conditions, and confirm the resulting alerts in your environment:
 
 | Rule ID | Suppresses | Condition |
 |---|---|---|
@@ -430,7 +430,38 @@ These rules drop known-benign, high-volume events to reduce alert fatigue:
 
 | Rule ID | Trigger condition | Purpose |
 |---|---|---|
-| 200203 | 2+ Event 3 alerts for the **same destination IP** within **60 seconds** | Detects repeated outbound connections to a single host — a potential C2 beacon or port scan |
+| 200203 | 2+ Event 3 alerts for the **same destination IP** within **60 seconds** (as configured in the deployed rule) | Flags repeated outbound connections for investigation. This pattern alone does not prove command-and-control activity or a port scan. |
+
+
+
+### Verify the End-to-End Pipeline
+
+After installing the decoder and rules on the **Wazuh manager**, validate the pipeline one stage at a time.
+
+1. **Validate the manager configuration:**
+
+   ```bash
+   sudo /var/ossec/bin/wazuh-analysisd -t
+   ```
+
+   Resolve any reported decoder or rule errors before proceeding. Pay attention to warnings about rule dependencies and ordering.
+
+2. **Restart the manager if you changed its decoder or rule files:**
+
+   ```bash
+   sudo systemctl restart wazuh-manager
+   sudo systemctl status wazuh-manager --no-pager
+   ```
+
+3. **Generate a test event on the Linux endpoint.** Use a command that matches your Sysmon configuration's filters. For example, if process creation for account-management tools is included, run a suitable test command in your lab.
+
+4. **Check each stage independently:**
+   - Sysmon generates the event and writes it to the configured log source.
+   - The Wazuh agent monitors that source and forwards the log.
+   - The manager decodes the message and evaluates the applicable rules.
+   - If a rule matches and produces an alert, search for it in the Wazuh dashboard or inspect the manager's alert output.
+
+> **Important:** Seeing an event in the endpoint's log confirms only the first stage. It does not, by itself, prove that the agent forwarded it, that the manager decoded it, or that a detection rule generated an alert. Rule levels, conditions, exclusions, and the installed ruleset version all affect the final result.
 
 
 ---
