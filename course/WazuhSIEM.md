@@ -346,6 +346,94 @@ Restart-Service WazuhSvc
 
 ---
 
+## Sysmon for Linux Wazuh Integration
+
+Unlike Windows Sysmon, which Wazuh supports through its built-in rules and decoders, Sysmon for Linux may require additional decoders and detection rules to properly process and analyze its events. These must be configured on the Wazuh manager to enable appropriate event parsing and alert generation for Linux endpoints.
+
+### Linux Sysmon Decoders and Rules
+
+#### 1. Wazuh Sysmon Decoders
+
+Decoders tell Wazuh **how to parse** raw log lines into structured fields. Without them, Wazuh cannot extract event data from Sysmon for Linux XML logs, and no rules will fire correctly.
+
+> **Source:** Production-grade decoders by [SOCFortress](https://github.com/socfortress/Wazuh-Rules/blob/main/Sysmon%20Linux/decoder-linux-sysmon.xml), fully mapped to MITRE ATT&CK.
+
+**How to add the decoder file:**
+
+- **Option A – CLI (recommended for automation):**
+
+```bash
+sudo nano /var/ossec/etc/decoders/sysmonforlinux_decoder.xml
+```
+
+Paste the decoder content into this new file. This keeps your main `ossec.conf` clean and modular.
+
+- **Option B – Wazuh Web UI:**
+
+  Navigate to **Server Management** → **Decoders** → **Add new decoders file** (or **Import decoders file**), then upload `sysmonforlinux_decoder.xml`.
+
+**How the decoder works:**
+
+The decoder uses a two-level, parent–child architecture:
+
+| Decoder Name | Role |
+|---|---|
+| `sysmon-linux` | **Parent** — matches any log line from the `sysmon` program name |
+| `sysmon-linux-child` | **Children** — each extracts a specific XML field via regex |
+
+The child decoders use `offset="after_parent"` regex patterns to extract structured fields from the raw Sysmon XML. Fields decoded include:
+
+| Category | Fields Extracted |
+|---|---|
+| **System metadata** | `eventID`, `keywords`, `level`, `channel`, `opcode`, `version`, `systemTime`, `eventRecordID`, `threadID`, `processID`, `computer`, `task` |
+| **Process info** | `image`, `commandLine`, `processGuid`, `processId`, `parentImage`, `parentCommandLine`, `parentProcessGuid`, `parentProcessId`, `integrityLevel`, `user`, `parentUser`, `logonId`, `logonGuid`, `terminalSessionId` |
+| **File metadata** | `originalFileName`, `fileVersion`, `product`, `company`, `description`, `hashes`, `ruleName` |
+| **Event 3 – Network** | `protocol`, `initiated`, `sourceIsIpv6`, `sourceIp`, `sourceHostname`, `sourcePort`, `sourcePortName`, `destinationIsIpv6`, `DestinationIp`, `destinationHostname`, `destinationPort`, `destinationPortName` |
+| **Event 9 – Raw read** | `device` |
+| **Event 11 – File create** | `targetFilename`, `creationUtcTime`, `utcTime` |
+| **Event 16 – Config change** | `configuration`, `configurationFileHash`, `state`, `version`, `schemaVersion` |
+| **Event 23 – File delete** | `isExecutable`, `archived` |
+
+---
+
+#### 2. Linux Sysmon Detection Rules
+
+Rules tell Wazuh **what to alert on** after decoding. The ruleset is organized into base rules (one per event type), override/suppression rules, and a frequency-based correlation rule.
+
+> **Source:** Production-grade rules by [SOCFortress](https://github.com/socfortress/Wazuh-Rules/blob/main/Sysmon%20Linux/200150-sysmon_for_linux_rules.xml).  
+> Deploy to: `/var/ossec/etc/rules/sysmonforlinux_rules.xml`
+
+**Rule coverage summary:**
+
+| Rule ID | Level | Event ID | Description | MITRE ATT&CK |
+|---|---|---|---|---|
+| 200150 | 3 | Any | Base catch-all for all Sysmon for Linux events | T1204 |
+| 200151 | 3 | 1 | **Process Creation** — logs image path of spawned process | T1204 |
+| 200152 | 3 | 3 | **Network Connection** — logs outbound connection by process | T1043 |
+| 200153 | 3 | 5 | **Process Terminated** — logs image of exited process | T1204 |
+| 200154 | 3 | 9 | **Raw Access Read** — detects low-level disk reads | T1204 |
+| 200155 | 3 | 11 | **File Created** — logs newly created files by process | T1044 |
+| 200156 | 3 | 16 | **Sysmon Config Changed** — detects tampering with Sysmon config | T1562 |
+| 200157 | 3 | 23 | **File Deleted** — detects file deletions by process | T1107, T1485 |
+
+**Noise suppression (override rules, level 1):**
+
+These rules drop known-benign, high-volume events to reduce alert fatigue:
+
+| Rule ID | Suppresses | Condition |
+|---|---|---|
+| 200200 | Rule 200152 (Event 3) | Image is `wazuh-agentd` or `zabbix_agentd` |
+| 200201 | Rule 200155 (Event 11) | Image is `wazuh-agentd` |
+| 200202 | Rule 200157 (Event 23) | Image is `wazuh-agentd` |
+
+**Frequency-based correlation rule:**
+
+| Rule ID | Trigger condition | Purpose |
+|---|---|---|
+| 200203 | 2+ Event 3 alerts for the **same destination IP** within **60 seconds** | Detects repeated outbound connections to a single host — a potential C2 beacon or port scan |
+
+
+---
 
 ### DeerStealer malware Detection
 
